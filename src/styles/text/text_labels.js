@@ -229,8 +229,9 @@ export const TextLabels = {
 
     preprocessText (draw) {
         // Font settings are required
-        if (!draw || !draw.font || typeof draw.font !== 'object') {
-            return;
+        if (!draw.font || typeof draw.font !== 'object') {
+            draw.valid = false;
+            return draw;
         }
 
         // Colors

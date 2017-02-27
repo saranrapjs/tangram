@@ -120,8 +120,8 @@ Object.assign(Points, {
 
         // Called here because otherwise it will be delayed until the feature queue is parsed,
         // and we want the preprocessing done before we evaluate text style below
-        draw = this.preprocess(draw);
-        if (!draw) {
+        this.preprocess(draw);
+        if (!draw.valid) {
             return;
         }
 
@@ -388,13 +388,15 @@ Object.assign(Points, {
         }
 
         // Optional text styling
-        draw.text = this.preprocessText(draw.text); // will return null if valid text styling wasn't provided
         if (draw.text) {
-            draw.text.key = draw.key; // copy layer key for use as label repeat group
-            draw.text.repeat_group = draw.text.repeat_group || draw.repeat_group; // inherit repeat group by default
-            draw.text.anchor = draw.text.anchor || this.default_anchor;
-            draw.text.optional = (typeof draw.text.optional === 'boolean') ? draw.text.optional : false; // default text to required
-            draw.text.interactive = draw.text.interactive || draw.interactive; // inherits from point
+            this.preprocessText(draw.text); // will return null if valid text styling wasn't provided
+            if (draw.text.valid) {
+                draw.text.key = draw.key; // copy layer key for use as label repeat group
+                draw.text.repeat_group = draw.text.repeat_group || draw.repeat_group; // inherit repeat group by default
+                draw.text.anchor = draw.text.anchor || this.default_anchor;
+                draw.text.optional = (typeof draw.text.optional === 'boolean') ? draw.text.optional : false; // default text to required
+                draw.text.interactive = draw.text.interactive || draw.interactive; // inherits from point
+            }
         }
 
         return draw;

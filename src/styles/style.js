@@ -194,8 +194,8 @@ export var Style = {
         try {
             var style = this.feature_style;
 
-            draw = this.preprocess(draw);
-            if (!draw) {
+            this.preprocess(draw);
+            if (!draw.valid) {
                 return;
             }
 
@@ -234,13 +234,19 @@ export var Style = {
     preprocess (draw) {
         // Preprocess first time
         if (!draw.preprocessed) {
-            draw = this._preprocess(draw); // optional subclass implementation
-            if (!draw) {
+            draw.preprocessed = true;
+            draw.valid = true;
+
+            // Check for order parameter
+            if (draw.order == null && this.blend !== 'overlay') {
+                log('warn', `Layer '${draw.layers[draw.layers.length-1]}': 'order' parameter is required unless blend mode is 'overlay'`);
+                draw.valid = false;
                 return;
             }
-            draw.preprocessed = true;
+
+            // Optional subclass implementation
+            this._preprocess(draw);
         }
-        return draw;
     },
 
     // optionally implemented by subclass
