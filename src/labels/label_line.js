@@ -220,11 +220,8 @@ class LabelLineStraight extends LabelLineBase {
 
         let offset = this.offset.slice();
 
-        if (flipped){
-            this.offset[1] *= -1;
-        }
-
-        if (layout.orientation === -1){
+        // if line is oriented, use the orientation to mirror the offset
+        if ((layout.orientation === -1 && !flipped) || (layout.orientation === 1 && flipped)){
             this.offset[1] *= -1;
         }
 
@@ -263,11 +260,8 @@ class LabelLineStraight extends LabelLineBase {
                     this.angle = -next_angle;
                     let angle_offset = this.angle;
 
-                    if (flipped){
-                        angle_offset += Math.PI;
-                    }
-
-                    if (layout.orientation === -1){
+                    // if line is oriented, use the orientation to mirror the offset's angle
+                    if ((layout.orientation === -1 && !flipped) || (layout.orientation === 1 && flipped)){
                         angle_offset += Math.PI;
                     }
 
@@ -329,11 +323,8 @@ class LabelLineCurved extends LabelLineBase {
 
         let offset = this.offset.slice();
 
-        if (flipped){
-            this.offset[1] *= -1;
-        }
-
-        if (layout.orientation === -1){
+        // if line is oriented, use the orientation to mirror the offset
+        if ((layout.orientation === -1 && !flipped) || (layout.orientation === 1 && flipped)){
             this.offset[1] *= -1;
         }
 
@@ -395,11 +386,8 @@ class LabelLineCurved extends LabelLineBase {
                         let angle_curve = pre_angle + angles[i];
                         let angle_offset = this.angle;
 
-                        if (flipped){
-                            angle_offset += Math.PI;
-                        }
-
-                        if (layout.orientation === -1){
+                        // if line is oriented, use the orientation to mirror the offset's angle
+                        if ((layout.orientation === -1 && !flipped) || (layout.orientation === 1 && flipped)){
                             angle_offset += Math.PI;
                         }
 
