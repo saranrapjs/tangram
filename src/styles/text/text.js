@@ -191,9 +191,13 @@ Object.assign(TextStyle, {
     // Implements label building for TextLabels mixin
     buildTextLabels (tile_key, feature_queue) {
         let labels = [];
+        let linked_graph = [];
+
         for (let f=0; f < feature_queue.length; f++) {
             let fq = feature_queue[f];
+
             let text_info = this.texts[tile_key][fq.text_settings_key][fq.text];
+
             let feature_labels;
             if (text_info.text_settings.can_articulate){
                 var sizes = text_info.size.map(function(size){ return size.collision_size; });
@@ -204,12 +208,29 @@ Object.assign(TextStyle, {
             else {
                 feature_labels = this.buildLabels(text_info.size.collision_size, fq.feature.geometry, fq.layout);
             }
+
+            if (fq.linked){
+                var link_index = feature_queue.indexOf(fq.linked);
+                if (link_index !== -1){
+                    linked_graph.push([f, link_index]);
+                }
+            }
+
             for (let i = 0; i < feature_labels.length; i++) {
                 let fql = Object.create(fq);
                 fql.label = feature_labels[i];
                 labels.push(fql);
             }
         }
+
+        for (let index = 0; index < linked_graph.length; index++){
+            var i = linked_graph[index][0];
+            var j = linked_graph[index][0];
+
+            labels[i].linked = labels[j];
+            labels[j].linked = labels[i];
+        }
+
         return labels;
     },
 

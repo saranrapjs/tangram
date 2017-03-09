@@ -47,11 +47,20 @@ export const TextLabels = {
         // unique text strings, grouped by text drawing style
         if (text instanceof Object){
             var results = [];
-            for (let key in text){
-                var current_text = text[key];
+            for (let orientation in text){
+                var current_text = text[orientation];
                 if (!current_text) continue;
 
-                let layout = this.computeTextLayout({}, feature, draw, context, tile, current_text, text_settings, key);
+                let layout = this.computeTextLayout({}, feature, draw, context, tile, current_text, text_settings, orientation);
+
+                // let linked_text;
+                // if (draw.optional){
+                //     if (orientation === 'left')
+                //         layout.linked = {line : feature.geometry, text : text['right']};
+                //     else
+                //         layout.linked = {line : feature.geometry, text : text['left']};
+                // }
+
                 if (!sizes[current_text]) {
                     // first label with this text/style/tile combination, make a new label entry
                     sizes[current_text] = {
@@ -65,7 +74,10 @@ export const TextLabels = {
                 });
             }
 
-            if (results.length === 0) return false;
+            if (draw.optional){
+                results[0].linked = results[1];
+                results[1].linked = results[0];
+            }
 
             return results;
         }
