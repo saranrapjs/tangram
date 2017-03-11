@@ -88,8 +88,6 @@ export default Collision = {
                 for (let i = 0; i < objects.length; i++) {
                     let object = objects[i];
 
-                    if (object.linked) debugger;
-
                     if (this.canBePlaced(object, tile, object.linked)) {
                         // Keep object if it isn't dependent on a parent object
                         if (!object.linked) {

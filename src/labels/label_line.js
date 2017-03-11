@@ -54,7 +54,7 @@ class LabelLineBase {
         this.obbs = [];
         this.aabbs = [];
         this.type = ''; // "curved" or "straight" to be set by parent class
-        this.placed = false;
+        this.placed = null;
     }
 
     // Given a line, find the longest series of segments that maintains a constant orientation in the x-direction.

@@ -223,15 +223,17 @@ Object.assign(TextStyle, {
             }
         }
 
+        // TODO - feature queue and label indices not matching
+        debugger
         for (let index = 0; index < linked_graph.length; index++){
             var i = linked_graph[index][0];
-            var j = linked_graph[index][0];
+            var j = linked_graph[index][1];
 
             labels[i].linked = labels[j];
             labels[j].linked = labels[i];
         }
 
-        return labels;
+        return labels.filter(function(label){ return label !== false});
     },
 
     // Builds one or more labels for a geometry

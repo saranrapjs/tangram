@@ -53,14 +53,6 @@ export const TextLabels = {
 
                 let layout = this.computeTextLayout({}, feature, draw, context, tile, current_text, text_settings, orientation);
 
-                // let linked_text;
-                // if (draw.optional){
-                //     if (orientation === 'left')
-                //         layout.linked = {line : feature.geometry, text : text['right']};
-                //     else
-                //         layout.linked = {line : feature.geometry, text : text['left']};
-                // }
-
                 if (!sizes[current_text]) {
                     // first label with this text/style/tile combination, make a new label entry
                     sizes[current_text] = {
@@ -74,7 +66,7 @@ export const TextLabels = {
                 });
             }
 
-            if (draw.optional){
+            if (draw.optional && results.length){
                 results[0].linked = results[1];
                 results[1].linked = results[0];
             }
